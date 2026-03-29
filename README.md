@@ -37,7 +37,7 @@ Your agent connects to Hebline as an MCP server. Instead of calling APIs directl
 
 ### Add to Claude Desktop
 
-Add this to your `claude_desktop_config.json`:
+Add to `claude_desktop_config.json`:
 
 ```json
 {
@@ -52,13 +52,59 @@ Add this to your `claude_desktop_config.json`:
 
 ### Add to Claude Code
 
-Add to your `.mcp.json`:
+Add to `.mcp.json`:
 
 ```json
 {
   "mcpServers": {
     "hebline": {
       "command": "hebline-mcp"
+    }
+  }
+}
+```
+
+### Add to Cursor
+
+Add to `.cursor/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "hebline": {
+      "command": "npx",
+      "args": ["-y", "-p", "@hebline.ai/mcp-server", "hebline-mcp"]
+    }
+  }
+}
+```
+
+### Add to Windsurf
+
+Add to `~/.codeium/windsurf/mcp_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "hebline": {
+      "command": "npx",
+      "args": ["-y", "-p", "@hebline.ai/mcp-server", "hebline-mcp"]
+    }
+  }
+}
+```
+
+### Add to VS Code (Copilot)
+
+Add to `.vscode/mcp.json`:
+
+```json
+{
+  "servers": {
+    "hebline": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "-p", "@hebline.ai/mcp-server", "hebline-mcp"]
     }
   }
 }
