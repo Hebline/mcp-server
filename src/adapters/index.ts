@@ -10,6 +10,8 @@ import { LibreTranslateAdapter } from "./libretranslate.js";
 import { DeepLAdapter } from "./deepl.js";
 import { FetchScraperAdapter } from "./fetch-scraper.js";
 import { FirecrawlAdapter } from "./firecrawl.js";
+import { ExchangeRateAdapter } from "./exchangerate.js";
+import { FixerAdapter } from "./fixer.js";
 
 const adapters = new Map<string, ServiceAdapter>();
 
@@ -25,6 +27,8 @@ register(new LibreTranslateAdapter());
 register(new DeepLAdapter());
 register(new FetchScraperAdapter());
 register(new FirecrawlAdapter());
+register(new ExchangeRateAdapter());
+register(new FixerAdapter());
 
 export function getAdapter(serviceId: string): ServiceAdapter | undefined {
   return adapters.get(serviceId);

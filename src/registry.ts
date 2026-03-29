@@ -98,6 +98,33 @@ export const services: ServiceDefinition[] = [
     avgLatencyMs: 3000,
     successRate: 0.97,
   },
+
+  // ── Currency ────────────────────────────────────────────────────────
+  {
+    id: "exchangerate",
+    name: "ExchangeRate-API",
+    category: "currency",
+    free: true,
+    requiresKey: false,
+    costPerCall: 0,
+    regions: ["global"],
+    qualityScore: 0.80,
+    avgLatencyMs: 200,
+    successRate: 0.97,
+  },
+  {
+    id: "fixer",
+    name: "Fixer.io",
+    category: "currency",
+    free: false,
+    requiresKey: true,
+    envKey: "FIXER_API_KEY",
+    costPerCall: 0.0001,
+    regions: ["global"],
+    qualityScore: 0.95,
+    avgLatencyMs: 150,
+    successRate: 0.99,
+  },
 ];
 
 /** Look up a single service by ID */

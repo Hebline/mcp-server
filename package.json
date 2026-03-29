@@ -1,6 +1,6 @@
 {
   "name": "@hebline.ai/mcp-server",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "mcpName": "io.github.Hebline/mcp-server",
   "description": "MCP-native API broker — routes agents to the best service at the best price",
   "type": "module",
