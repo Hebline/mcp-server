@@ -1,0 +1,205 @@
+# Hebline MCP Server
+
+**Intelligent API routing for AI agents via MCP.**
+
+Hebline sits between your AI agents and the APIs they call. It routes requests to the best provider based on cost, quality, and latency — all through the open [Model Context Protocol (MCP)](https://modelcontextprotocol.io/).
+
+## Why Hebline?
+
+AI agents call APIs autonomously — but they don't know which provider is cheapest, fastest, or even free. Hebline fixes that:
+
+- **Intelligent Routing** — Automatically picks the best service based on quality, cost, latency, and availability. Free alternatives are always considered.
+- **Provider Abstraction** — Your agent says *what* it needs ("geocode this address"), not *which service* to use. Swap providers without changing agent code.
+- **Cost Transparency** — Every call is logged with service used, latency, and cost. Know exactly what your agents spend.
+- **BYOK (Bring Your Own Key)** — Paid services use your API keys via environment variables. No key? The service is automatically excluded from routing.
+
+## How It Works
+
+```
+Your AI Agent ←→ Hebline MCP Server ←→ Best API (Nominatim, DeepL, Google Maps, ...)
+                        │
+                   Smart Routing
+                   Cost Logging
+                   Provider Scoring
+```
+
+Your agent connects to Hebline as an MCP server. Instead of calling APIs directly, it uses Hebline's tools — `execute`, `compare`, or `categories`. Hebline scores all available services, picks the best one, makes the call, and returns the result with full metadata.
+
+## Available MCP Tools
+
+| Tool | Description |
+|------|-------------|
+| `execute` | Route to the best service and make the API call. Returns result + metadata (service, cost, latency). |
+| `compare` | Show all available services for a capability with scores. See what's available before committing. |
+| `categories` | List all supported capabilities and their services. |
+
+## Quick Start
+
+### Add to Claude Desktop
+
+Add this to your `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "hebline": {
+      "command": "npx",
+      "args": ["-y", "-p", "@hebline.ai/mcp-server", "hebline-mcp"]
+    }
+  }
+}
+```
+
+### Add to Claude Code
+
+Add to your `.mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "hebline": {
+      "command": "hebline-mcp"
+    }
+  }
+}
+```
+
+### Install globally
+
+```bash
+npm install -g @hebline.ai/mcp-server
+```
+
+### With paid services (optional)
+
+Set environment variables for any paid providers you want to use:
+
+```env
+GOOGLE_MAPS_API_KEY=your-key-here
+DEEPL_API_KEY=your-key-here
+LIBRETRANSLATE_API_KEY=your-key-here
+```
+
+No keys? No problem — Hebline routes to free alternatives automatically.
+
+## Supported Services
+
+| Category | Service | Free | API Key Required |
+|----------|---------|------|------------------|
+| Geocoding | Nominatim (OpenStreetMap) | Yes | No |
+| Geocoding | Google Maps | No | `GOOGLE_MAPS_API_KEY` |
+| Translation | MyMemory | Yes | No |
+| Translation | LibreTranslate | No | `LIBRETRANSLATE_API_KEY` |
+| Translation | DeepL | No | `DEEPL_API_KEY` |
+
+## Example
+
+An agent asks: *"Geocode the Brandenburg Gate in Berlin"*
+
+Hebline receives:
+```json
+{
+  "capability": "geocoding",
+  "input": { "query": "Brandenburger Tor, Berlin" },
+  "constraint": "free"
+}
+```
+
+Hebline responds:
+```json
+{
+  "success": true,
+  "data": {
+    "lat": 52.5163,
+    "lon": 13.3777,
+    "displayName": "Brandenburger Tor, Pariser Platz, Berlin, 10117, Deutschland"
+  },
+  "meta": {
+    "service": "Nominatim (OpenStreetMap)",
+    "costUsd": 0,
+    "latencyMs": 258,
+    "score": 0.702,
+    "free": true
+  }
+}
+```
+
+The agent got coordinates, knows it was free, and Hebline logged the call for future analysis.
+
+## Architecture
+
+```
+mcp-server/
+├── src/
+│   ├── index.ts              # MCP server entry point (stdio transport)
+│   ├── types.ts              # Shared TypeScript types
+│   ├── registry.ts           # Service definitions (capabilities, costs, scores)
+│   ├── router.ts             # Weighted scoring engine (Hopfield-ready)
+│   ├── logger.ts             # Append-only JSONL call log (~/.hebline/calls.jsonl)
+│   ├── adapters/             # One adapter per service
+│   │   ├── nominatim.ts      # Free geocoding
+│   │   ├── google-maps.ts    # Paid geocoding (BYOK)
+│   │   ├── mymemory.ts       # Free translation
+│   │   ├── libretranslate.ts # Paid translation (BYOK)
+│   │   └── deepl.ts          # Paid translation (BYOK)
+│   └── tools/                # MCP tool definitions
+│       ├── execute.ts        # Route + call best service
+│       ├── compare.ts        # Score all services
+│       └── categories.ts     # List capabilities
+```
+
+## Call Logging
+
+Every API call is logged to `~/.hebline/calls.jsonl`:
+
+```json
+{"timestamp":"2026-03-29T09:36:37Z","capability":"geocoding","serviceId":"nominatim","latencyMs":212,"success":true,"costUsd":0}
+```
+
+No content is logged — only metadata. This data will power Hebbian Learning in future versions.
+
+## Roadmap
+
+- [x] Core MCP server with stdio transport
+- [x] Weighted scoring router
+- [x] Geocoding adapters (Nominatim, Google Maps)
+- [x] Translation adapters (MyMemory, LibreTranslate, DeepL)
+- [x] BYOK key management
+- [x] Append-only call logging
+- [x] CI/CD with GitHub Actions
+- [ ] Hebbian Learning — router learns from call history
+- [ ] Hopfield network scoring (replaces weighted scoring)
+- [ ] More categories (web scraping, currency, OCR, email)
+- [ ] Community adapter system
+- [ ] SSE transport for remote deployments
+- [ ] Web dashboard for cost analytics
+- [ ] Budget alerts and spending limits
+- [ ] Multi-agent cost attribution
+
+## Business Model
+
+Hebline follows an **open-core** model:
+
+- **Open Source (this repo)** — MCP server, routing, adapters, call logging. Free forever.
+- **Hebline Cloud** — Hosted dashboard, team management, advanced analytics, Hebbian Learning insights. [hebline.ai](https://hebline.ai)
+- **Enterprise Self-Hosted** — On-prem deployment with premium support and SLAs.
+
+## Contributing
+
+Contributions are welcome! Adding a new adapter is straightforward — implement the `ServiceAdapter` interface and register it.
+
+```bash
+git clone https://github.com/hebline/mcp-server.git
+cd mcp-server
+npm install
+npm run build
+npm test
+```
+
+## License
+
+[MIT](LICENSE)
+
+---
+
+Built by [Hebline](https://hebline.ai) — Making every API call smarter.
