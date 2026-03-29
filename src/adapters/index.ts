@@ -12,6 +12,8 @@ import { FetchScraperAdapter } from "./fetch-scraper.js";
 import { FirecrawlAdapter } from "./firecrawl.js";
 import { ExchangeRateAdapter } from "./exchangerate.js";
 import { FixerAdapter } from "./fixer.js";
+import { OcrSpaceAdapter } from "./ocr-space.js";
+import { GoogleVisionAdapter } from "./google-vision.js";
 
 const adapters = new Map<string, ServiceAdapter>();
 
@@ -29,6 +31,8 @@ register(new FetchScraperAdapter());
 register(new FirecrawlAdapter());
 register(new ExchangeRateAdapter());
 register(new FixerAdapter());
+register(new OcrSpaceAdapter());
+register(new GoogleVisionAdapter());
 
 export function getAdapter(serviceId: string): ServiceAdapter | undefined {
   return adapters.get(serviceId);

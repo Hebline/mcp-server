@@ -125,6 +125,33 @@ export const services: ServiceDefinition[] = [
     avgLatencyMs: 150,
     successRate: 0.99,
   },
+
+  // ── OCR ─────────────────────────────────────────────────────────────
+  {
+    id: "ocr-space",
+    name: "OCR.space",
+    category: "ocr",
+    free: true,
+    requiresKey: false, // Hebline provides default key
+    costPerCall: 0,
+    regions: ["global"],
+    qualityScore: 0.80,
+    avgLatencyMs: 2000,
+    successRate: 0.93,
+  },
+  {
+    id: "google-vision",
+    name: "Google Cloud Vision",
+    category: "ocr",
+    free: false,
+    requiresKey: true,
+    envKey: "GOOGLE_VISION_API_KEY",
+    costPerCall: 0.0015,
+    regions: ["global"],
+    qualityScore: 0.97,
+    avgLatencyMs: 1500,
+    successRate: 0.99,
+  },
 ];
 
 /** Look up a single service by ID */
