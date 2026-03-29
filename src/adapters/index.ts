@@ -5,6 +5,7 @@
 import type { ServiceAdapter } from "../types.js";
 import { NominatimAdapter } from "./nominatim.js";
 import { GoogleMapsAdapter } from "./google-maps.js";
+import { MyMemoryAdapter } from "./mymemory.js";
 import { LibreTranslateAdapter } from "./libretranslate.js";
 import { DeepLAdapter } from "./deepl.js";
 
@@ -17,6 +18,7 @@ function register(adapter: ServiceAdapter): void {
 // Register all built-in adapters
 register(new NominatimAdapter());
 register(new GoogleMapsAdapter());
+register(new MyMemoryAdapter());
 register(new LibreTranslateAdapter());
 register(new DeepLAdapter());
 

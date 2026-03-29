@@ -34,12 +34,25 @@ export const services: ServiceDefinition[] = [
 
   // ── Translation ─────────────────────────────────────────────────────
   {
-    id: "libretranslate",
-    name: "LibreTranslate",
+    id: "mymemory",
+    name: "MyMemory",
     category: "translation",
     free: true,
     requiresKey: false,
     costPerCall: 0,
+    regions: ["global"],
+    qualityScore: 0.72,
+    avgLatencyMs: 300,
+    successRate: 0.95,
+  },
+  {
+    id: "libretranslate",
+    name: "LibreTranslate",
+    category: "translation",
+    free: false,
+    requiresKey: true,
+    envKey: "LIBRETRANSLATE_API_KEY",
+    costPerCall: 0.00001,
     regions: ["global"],
     qualityScore: 0.70,
     avgLatencyMs: 600,

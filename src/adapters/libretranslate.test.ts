@@ -1,10 +1,16 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { LibreTranslateAdapter } from "./libretranslate.js";
 
 const adapter = new LibreTranslateAdapter();
 
 beforeEach(() => {
   vi.restoreAllMocks();
+  process.env.LIBRETRANSLATE_API_KEY = "test-key";
+});
+
+afterEach(() => {
+  delete process.env.LIBRETRANSLATE_API_KEY;
+  delete process.env.LIBRETRANSLATE_HOST;
 });
 
 describe("LibreTranslateAdapter", () => {
@@ -26,19 +32,13 @@ describe("LibreTranslateAdapter", () => {
     });
   });
 
-  it("defaults source to auto and target to en", async () => {
-    const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValueOnce(
-      new Response(
-        JSON.stringify({ translatedText: "Hello" }),
-        { status: 200 },
-      ),
-    );
+  it("returns error when API key is missing", async () => {
+    delete process.env.LIBRETRANSLATE_API_KEY;
 
-    await adapter.execute({ text: "Hallo" });
+    const res = await adapter.execute({ text: "Hello", target: "de" });
 
-    const body = JSON.parse(fetchSpy.mock.calls[0][1]!.body as string);
-    expect(body.source).toBe("auto");
-    expect(body.target).toBe("en");
+    expect(res.success).toBe(false);
+    expect(res.error).toMatch(/LIBRETRANSLATE_API_KEY/);
   });
 
   it("returns error on empty text", async () => {
@@ -59,15 +59,14 @@ describe("LibreTranslateAdapter", () => {
     expect(res.error).toBe("HTTP 429");
   });
 
-  it("uses custom host from env", async () => {
-    process.env.LIBRETRANSLATE_HOST = "http://localhost:5000";
+  it("sends api_key in body", async () => {
     const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValueOnce(
       new Response(JSON.stringify({ translatedText: "Hola" }), { status: 200 }),
     );
 
     await adapter.execute({ text: "Hello", target: "es" });
 
-    expect(fetchSpy.mock.calls[0][0]).toBe("http://localhost:5000/translate");
-    delete process.env.LIBRETRANSLATE_HOST;
+    const body = JSON.parse(fetchSpy.mock.calls[0][1]!.body as string);
+    expect(body.api_key).toBe("test-key");
   });
 });

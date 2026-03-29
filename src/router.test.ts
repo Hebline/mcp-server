@@ -145,14 +145,14 @@ describe("Router", () => {
 
   // ── Translation ───────────────────────────────────────────────────
   describe("translation routing", () => {
-    it("routes to libretranslate when free", () => {
+    it("routes to mymemory when free", () => {
       const best = routeBest({
         capability: "translation",
         input: {},
         constraint: "free",
       });
 
-      expect(best!.service.id).toBe("libretranslate");
+      expect(best!.service.id).toBe("mymemory");
     });
 
     it("prefers DeepL with key on 'any' constraint", () => {

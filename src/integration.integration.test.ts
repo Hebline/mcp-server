@@ -7,7 +7,7 @@
 
 import { describe, it, expect } from "vitest";
 import { NominatimAdapter } from "./adapters/nominatim.js";
-import { LibreTranslateAdapter } from "./adapters/libretranslate.js";
+import { MyMemoryAdapter } from "./adapters/mymemory.js";
 
 describe("Integration: Nominatim (real API)", () => {
   const adapter = new NominatimAdapter();
@@ -45,8 +45,8 @@ describe("Integration: Nominatim (real API)", () => {
   });
 });
 
-describe("Integration: LibreTranslate (real API)", () => {
-  const adapter = new LibreTranslateAdapter();
+describe("Integration: MyMemory (real API)", () => {
+  const adapter = new MyMemoryAdapter();
 
   it("translates 'Hello' to French", async () => {
     const res = await adapter.execute({
@@ -55,12 +55,7 @@ describe("Integration: LibreTranslate (real API)", () => {
       target: "fr",
     });
 
-    // LibreTranslate may be rate-limited or down — skip gracefully
-    if (!res.success) {
-      console.warn(`LibreTranslate unavailable: ${res.error}`);
-      return;
-    }
-
+    expect(res.success).toBe(true);
     const data = res.data as { translatedText: string };
     expect(data.translatedText.toLowerCase()).toMatch(/bonjour|salut/);
   });
@@ -72,11 +67,7 @@ describe("Integration: LibreTranslate (real API)", () => {
       target: "en",
     });
 
-    if (!res.success) {
-      console.warn(`LibreTranslate unavailable: ${res.error}`);
-      return;
-    }
-
+    expect(res.success).toBe(true);
     const data = res.data as { translatedText: string };
     expect(data.translatedText.toLowerCase()).toMatch(/good morning/);
   });

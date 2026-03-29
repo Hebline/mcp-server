@@ -1,10 +1,10 @@
 // ---------------------------------------------------------------------------
-// Adapter: LibreTranslate — FREE
+// Adapter: LibreTranslate — PAID (BYOK)
 // ---------------------------------------------------------------------------
 
 import type { ServiceAdapter, ServiceResponse } from "../types.js";
 
-const DEFAULT_HOST = "https://libretranslate.com";
+const DEFAULT_HOST = "https://portal.libretranslate.com";
 
 export class LibreTranslateAdapter implements ServiceAdapter {
   readonly serviceId = "libretranslate";
@@ -18,12 +18,17 @@ export class LibreTranslateAdapter implements ServiceAdapter {
       return { success: false, data: null, error: "Missing text" };
     }
 
+    const apiKey = process.env.LIBRETRANSLATE_API_KEY;
+    if (!apiKey) {
+      return { success: false, data: null, error: "LIBRETRANSLATE_API_KEY not set" };
+    }
+
     const host = process.env.LIBRETRANSLATE_HOST ?? DEFAULT_HOST;
 
     const res = await fetch(`${host}/translate`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ q: text, source, target, format: "text" }),
+      body: JSON.stringify({ q: text, source, target, format: "text", api_key: apiKey }),
     });
 
     if (!res.ok) {
