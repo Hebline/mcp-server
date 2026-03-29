@@ -71,6 +71,33 @@ export const services: ServiceDefinition[] = [
     avgLatencyMs: 200,
     successRate: 0.99,
   },
+
+  // ── Web Scraping ────────────────────────────────────────────────────
+  {
+    id: "fetch-scraper",
+    name: "Fetch Scraper",
+    category: "web-scraping",
+    free: true,
+    requiresKey: false,
+    costPerCall: 0,
+    regions: ["global"],
+    qualityScore: 0.60,
+    avgLatencyMs: 800,
+    successRate: 0.85,
+  },
+  {
+    id: "firecrawl",
+    name: "Firecrawl",
+    category: "web-scraping",
+    free: false,
+    requiresKey: true,
+    envKey: "FIRECRAWL_API_KEY",
+    costPerCall: 0.001,
+    regions: ["global"],
+    qualityScore: 0.95,
+    avgLatencyMs: 3000,
+    successRate: 0.97,
+  },
 ];
 
 /** Look up a single service by ID */
