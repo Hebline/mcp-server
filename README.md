@@ -176,14 +176,6 @@ No content is logged — only metadata. This data will power Hebbian Learning in
 - [ ] Budget alerts and spending limits
 - [ ] Multi-agent cost attribution
 
-## Business Model
-
-Hebline follows an **open-core** model:
-
-- **Open Source (this repo)** — MCP server, routing, adapters, call logging. Free forever.
-- **Hebline Cloud** — Hosted dashboard, team management, advanced analytics, Hebbian Learning insights. [hebline.ai](https://hebline.ai)
-- **Enterprise Self-Hosted** — On-prem deployment with premium support and SLAs.
-
 ## Contributing
 
 Contributions are welcome! Adding a new adapter is straightforward — implement the `ServiceAdapter` interface and register it.
