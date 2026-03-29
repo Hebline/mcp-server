@@ -1,16 +1,18 @@
 # Hebline MCP Server
 
-**Intelligent API routing for AI agents via MCP.**
+**Your smartest line to any API.**
 
-Hebline sits between your AI agents and the APIs they call. It routes requests to the best provider based on cost, quality, and latency — all through the open [Model Context Protocol (MCP)](https://modelcontextprotocol.io/).
+MCP gave agents a language. Hebline gives them judgment. It sits between your AI agents and the APIs they call — routing every request to the best service at the best price, including free alternatives. Every call makes it smarter.
 
 ## Why Hebline?
 
-AI agents call APIs autonomously — but they don't know which provider is cheapest, fastest, or even free. Hebline fixes that:
+Your agents are bleeding money. One task triggers 5–10 paid API calls across different providers. No transparency, no cost control. Hebline fixes that:
 
-- **Intelligent Routing** — Automatically picks the best service based on quality, cost, latency, and availability. Free alternatives are always considered.
+- **Free by default** — Always a free or open-source alternative in the mix. No key needed to get started.
+- **A broker that thinks** — Scores every service on quality, cost, latency, and reliability. Picks the best one automatically.
 - **Provider Abstraction** — Your agent says *what* it needs ("geocode this address"), not *which service* to use. Swap providers without changing agent code.
 - **Cost Transparency** — Every call is logged with service used, latency, and cost. Know exactly what your agents spend.
+- **Learns from usage** — Hebbian learning strengthens what works, weakens what doesn't. Your broker gets smarter every day.
 - **BYOK (Bring Your Own Key)** — Paid services use your API keys via environment variables. No key? The service is automatically excluded from routing.
 
 ## How It Works
@@ -240,4 +242,4 @@ npm test
 
 ---
 
-Built by [Hebline](https://hebline.ai) — Making every API call smarter.
+Built by [Hebline](https://hebline.ai) — Your smartest line to any API.
