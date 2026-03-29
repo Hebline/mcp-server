@@ -14,6 +14,10 @@ import { ExchangeRateAdapter } from "./exchangerate.js";
 import { FixerAdapter } from "./fixer.js";
 import { OcrSpaceAdapter } from "./ocr-space.js";
 import { GoogleVisionAdapter } from "./google-vision.js";
+import { OpenMeteoAdapter } from "./open-meteo.js";
+import { OpenWeatherMapAdapter } from "./openweathermap.js";
+import { DuckDuckGoAdapter } from "./duckduckgo.js";
+import { BraveSearchAdapter } from "./brave-search.js";
 
 const adapters = new Map<string, ServiceAdapter>();
 
@@ -33,6 +37,10 @@ register(new ExchangeRateAdapter());
 register(new FixerAdapter());
 register(new OcrSpaceAdapter());
 register(new GoogleVisionAdapter());
+register(new OpenMeteoAdapter());
+register(new OpenWeatherMapAdapter());
+register(new DuckDuckGoAdapter());
+register(new BraveSearchAdapter());
 
 export function getAdapter(serviceId: string): ServiceAdapter | undefined {
   return adapters.get(serviceId);

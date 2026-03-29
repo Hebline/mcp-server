@@ -98,8 +98,8 @@ describe("E2E: MCP Server", () => {
 
     expect(response).toBeDefined();
     const content = JSON.parse(response.result.content[0].text);
-    expect(content.totalCategories).toBe(5);
-    expect(content.totalServices).toBe(11);
+    expect(content.totalCategories).toBe(7);
+    expect(content.totalServices).toBe(15);
 
     const cats = content.categories.map((c: any) => c.category);
     expect(cats).toContain("geocoding");

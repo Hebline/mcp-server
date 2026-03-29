@@ -152,6 +152,60 @@ export const services: ServiceDefinition[] = [
     avgLatencyMs: 1500,
     successRate: 0.99,
   },
+
+  // ── Weather ─────────────────────────────────────────────────────────
+  {
+    id: "open-meteo",
+    name: "Open-Meteo",
+    category: "weather",
+    free: true,
+    requiresKey: false,
+    costPerCall: 0,
+    regions: ["global"],
+    qualityScore: 0.85,
+    avgLatencyMs: 300,
+    successRate: 0.97,
+  },
+  {
+    id: "openweathermap",
+    name: "OpenWeatherMap",
+    category: "weather",
+    free: false,
+    requiresKey: true,
+    envKey: "OPENWEATHERMAP_API_KEY",
+    costPerCall: 0,
+    regions: ["global"],
+    qualityScore: 0.90,
+    avgLatencyMs: 200,
+    successRate: 0.99,
+  },
+
+  // ── Web Search ──────────────────────────────────────────────────────
+  {
+    id: "duckduckgo",
+    name: "DuckDuckGo Instant Answer",
+    category: "web-search",
+    free: true,
+    requiresKey: false,
+    costPerCall: 0,
+    regions: ["global"],
+    qualityScore: 0.55,
+    avgLatencyMs: 400,
+    successRate: 0.80,
+  },
+  {
+    id: "brave-search",
+    name: "Brave Search",
+    category: "web-search",
+    free: false,
+    requiresKey: true,
+    envKey: "BRAVE_SEARCH_API_KEY",
+    costPerCall: 0.001,
+    regions: ["global"],
+    qualityScore: 0.92,
+    avgLatencyMs: 300,
+    successRate: 0.98,
+  },
 ];
 
 /** Look up a single service by ID */
