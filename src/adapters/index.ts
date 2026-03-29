@@ -18,6 +18,8 @@ import { OpenMeteoAdapter } from "./open-meteo.js";
 import { OpenWeatherMapAdapter } from "./openweathermap.js";
 import { DuckDuckGoAdapter } from "./duckduckgo.js";
 import { BraveSearchAdapter } from "./brave-search.js";
+import { HackerNewsAdapter } from "./hackernews.js";
+import { NewsApiAdapter } from "./newsapi.js";
 
 const adapters = new Map<string, ServiceAdapter>();
 
@@ -41,6 +43,8 @@ register(new OpenMeteoAdapter());
 register(new OpenWeatherMapAdapter());
 register(new DuckDuckGoAdapter());
 register(new BraveSearchAdapter());
+register(new HackerNewsAdapter());
+register(new NewsApiAdapter());
 
 export function getAdapter(serviceId: string): ServiceAdapter | undefined {
   return adapters.get(serviceId);

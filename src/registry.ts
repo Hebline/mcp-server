@@ -206,6 +206,33 @@ export const services: ServiceDefinition[] = [
     avgLatencyMs: 300,
     successRate: 0.98,
   },
+
+  // ── News ────────────────────────────────────────────────────────────
+  {
+    id: "hackernews",
+    name: "HackerNews (Algolia)",
+    category: "news",
+    free: true,
+    requiresKey: false,
+    costPerCall: 0,
+    regions: ["global"],
+    qualityScore: 0.75,
+    avgLatencyMs: 300,
+    successRate: 0.98,
+  },
+  {
+    id: "newsapi",
+    name: "NewsAPI.org",
+    category: "news",
+    free: false,
+    requiresKey: true,
+    envKey: "NEWSAPI_KEY",
+    costPerCall: 0,
+    regions: ["global"],
+    qualityScore: 0.93,
+    avgLatencyMs: 400,
+    successRate: 0.97,
+  },
 ];
 
 /** Look up a single service by ID */
