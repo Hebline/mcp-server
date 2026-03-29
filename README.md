@@ -14,6 +14,8 @@ Your agents are bleeding money. One task triggers 5–10 paid API calls across d
 - **Cost Transparency** — Every call is logged with service used, latency, and cost. Know exactly what your agents spend.
 - **Learns from usage** — Hebbian learning strengthens what works, weakens what doesn't. Your broker gets smarter every day.
 - **BYOK (Bring Your Own Key)** — Paid services use your API keys via environment variables. No key? The service is automatically excluded from routing.
+- **GDPR compliant** — Only anonymized metadata logged. No API call content stored. Self-hosted option for zero data leaving your network.
+- **Open Source** — Core MCP server is MIT licensed. Community-driven adapter system.
 
 ## How It Works
 
