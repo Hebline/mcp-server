@@ -1,15 +1,17 @@
 # Hebline MCP Server
 
-**Your smartest line to any API.**
+**Your agents overpay for every API call. We fix that.**
 
-MCP gave agents a language. Hebline gives them judgment. It sits between your AI agents and the APIs they call — routing every request to the best service at the best price, including free alternatives. Every call makes it smarter.
+Hebline routes every API call — including LLM calls — to the best service at the right price. Free when it's enough. Paid when it matters. It knows the difference.
+
+Every other router earns a margin on your paid calls. Routing you to free alternatives kills their revenue. **No margin on your API calls. Ever.**
 
 ## Why Hebline?
 
 Your agents are bleeding money. One task triggers 5–10 paid API calls across different providers. No transparency, no cost control. Hebline fixes that:
 
-- **Free by default** — Always a free or open-source alternative in the mix. No key needed to get started.
-- **A broker that thinks** — Scores every service on quality, cost, latency, and reliability. Picks the best one automatically.
+- **Route free first** — Most calls don't need the best model. Hebline learns precisely when it matters — and keeps learning as the market changes.
+- **No margin. Honest routing.** — We don't earn when you pay more. So we're the only router built to actually save you money.
 - **Provider Abstraction** — Your agent says *what* it needs ("geocode this address"), not *which service* to use. Swap providers without changing agent code.
 - **Cost Transparency** — Every call is logged with service used, latency, and cost. Know exactly what your agents spend.
 - **Learns from usage** — Hebbian learning strengthens what works, weakens what doesn't. Your broker gets smarter every day.
@@ -244,4 +246,4 @@ npm test
 
 ---
 
-Built by [Hebline](https://hebline.ai) — Your smartest line to any API.
+Built by [Hebline](https://hebline.ai) — Route free first. Only pay when necessary.
