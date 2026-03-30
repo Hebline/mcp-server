@@ -136,13 +136,19 @@ No keys? No problem — Hebline routes to free alternatives automatically.
 
 ## Supported Services
 
-| Category | Service | Free | API Key Required |
-|----------|---------|------|------------------|
-| Geocoding | Nominatim (OpenStreetMap) | Yes | No |
-| Geocoding | Google Maps | No | `GOOGLE_MAPS_API_KEY` |
-| Translation | MyMemory | Yes | No |
-| Translation | LibreTranslate | No | `LIBRETRANSLATE_API_KEY` |
-| Translation | DeepL | No | `DEEPL_API_KEY` |
+| Category | Free | Paid (BYOK) |
+|----------|------|-------------|
+| **LLMs** | Groq (Llama 3.3 70B), Google Gemini Flash | OpenAI GPT-4o-mini (`OPENAI_API_KEY`) |
+| Geocoding | Nominatim (OpenStreetMap) | Google Maps (`GOOGLE_MAPS_API_KEY`) |
+| Translation | MyMemory | DeepL (`DEEPL_API_KEY`), LibreTranslate (`LIBRETRANSLATE_API_KEY`) |
+| Web Scraping | Fetch Scraper | Firecrawl (`FIRECRAWL_API_KEY`) |
+| Currency | ExchangeRate-API | Fixer.io (`FIXER_API_KEY`) |
+| OCR | OCR.space | Google Vision (`GOOGLE_VISION_API_KEY`) |
+| Weather | Open-Meteo | OpenWeatherMap (`OPENWEATHERMAP_API_KEY`) |
+| Web Search | DuckDuckGo | Brave Search (`BRAVE_API_KEY`) |
+| News | HackerNews | NewsAPI.org (`NEWSAPI_KEY`) |
+
+**9 categories, 20 services.** Free services work instantly — no API key needed. LLMs route through the Hebline proxy when no local key is set (50 free calls/day).
 
 ## Example
 
