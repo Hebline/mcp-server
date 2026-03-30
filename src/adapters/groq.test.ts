@@ -33,11 +33,18 @@ describe("GroqAdapter", () => {
     expect(data.usage.total_tokens).toBe(16);
   });
 
-  it("returns error when API key missing", async () => {
+  it("falls back to proxy when API key missing", async () => {
     delete process.env.GROQ_API_KEY;
+    vi.spyOn(globalThis, "fetch").mockResolvedValueOnce(
+      new Response(
+        JSON.stringify({ text: "Proxy response", model: "llama-3.3-70b-versatile", usage: {} }),
+        { status: 200, headers: { "X-RateLimit-Remaining": "49" } },
+      ),
+    );
     const res = await adapter.execute({ prompt: "test" });
-    expect(res.success).toBe(false);
-    expect(res.error).toMatch(/GROQ_API_KEY/);
+    expect(res.success).toBe(true);
+    const data = res.data as any;
+    expect(data.proxy).toBe(true);
   });
 
   it("returns error on empty prompt", async () => {

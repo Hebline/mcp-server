@@ -20,8 +20,13 @@ export class GeminiAdapter implements ServiceAdapter {
     }
 
     const apiKey = process.env.GOOGLE_AI_API_KEY ?? process.env.GEMINI_API_KEY;
+
+    // Use Hebline proxy if no local key
     if (!apiKey) {
-      return { success: false, data: null, error: "GOOGLE_AI_API_KEY not set" };
+      const messages: Array<{ role: string; content: string }> = [];
+      if (systemPrompt) messages.push({ role: "system", content: systemPrompt });
+      messages.push({ role: "user", content: prompt });
+      return this.callProxy(messages, model, maxTokens);
     }
 
     const contents: Array<{ role: string; parts: Array<{ text: string }> }> = [];
@@ -74,6 +79,40 @@ export class GeminiAdapter implements ServiceAdapter {
               total_tokens: body.usageMetadata.totalTokenCount,
             }
           : null,
+      },
+    };
+  }
+
+  private async callProxy(
+    messages: Array<{ role: string; content: string }>,
+    model: string,
+    maxTokens: number,
+  ): Promise<ServiceResponse> {
+    const res = await fetch("https://hebline.ai/api/proxy/llm", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ provider: "gemini", messages, model, max_tokens: maxTokens }),
+    });
+
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({})) as { error?: string; code?: string };
+      if (body.code === "RATE_LIMITED") {
+        return { success: false, data: null, error: body.error ?? "Rate limited. Set GOOGLE_AI_API_KEY for unlimited usage." };
+      }
+      return { success: false, data: null, error: body.error ?? `Proxy HTTP ${res.status}` };
+    }
+
+    const body = (await res.json()) as { text: string; model: string; usage: unknown };
+    const remaining = res.headers.get("X-RateLimit-Remaining");
+
+    return {
+      success: true,
+      data: {
+        text: body.text,
+        model: body.model,
+        usage: body.usage,
+        proxy: true,
+        ...(remaining && Number(remaining) < 10 ? { notice: `${remaining} free calls remaining today. Set GOOGLE_AI_API_KEY for unlimited.` } : {}),
       },
     };
   }

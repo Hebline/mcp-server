@@ -19,14 +19,16 @@ export class GroqAdapter implements ServiceAdapter {
       return { success: false, data: null, error: "Missing prompt" };
     }
 
-    const apiKey = process.env.GROQ_API_KEY;
-    if (!apiKey) {
-      return { success: false, data: null, error: "GROQ_API_KEY not set" };
-    }
-
     const messages: Array<{ role: string; content: string }> = [];
     if (systemPrompt) messages.push({ role: "system", content: systemPrompt });
     messages.push({ role: "user", content: prompt });
+
+    const apiKey = process.env.GROQ_API_KEY;
+
+    // Use Hebline proxy if no local key
+    if (!apiKey) {
+      return this.callProxy(messages, model, maxTokens);
+    }
 
     const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
@@ -53,6 +55,40 @@ export class GroqAdapter implements ServiceAdapter {
         text: body.choices[0]?.message.content ?? "",
         model: body.model,
         usage: body.usage,
+      },
+    };
+  }
+
+  private async callProxy(
+    messages: Array<{ role: string; content: string }>,
+    model: string,
+    maxTokens: number,
+  ): Promise<ServiceResponse> {
+    const res = await fetch("https://hebline.ai/api/proxy/llm", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ provider: "groq", messages, model, max_tokens: maxTokens }),
+    });
+
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({})) as { error?: string; code?: string };
+      if (body.code === "RATE_LIMITED") {
+        return { success: false, data: null, error: body.error ?? "Rate limited. Set GROQ_API_KEY for unlimited usage." };
+      }
+      return { success: false, data: null, error: body.error ?? `Proxy HTTP ${res.status}` };
+    }
+
+    const body = (await res.json()) as { text: string; model: string; usage: unknown };
+    const remaining = res.headers.get("X-RateLimit-Remaining");
+
+    return {
+      success: true,
+      data: {
+        text: body.text,
+        model: body.model,
+        usage: body.usage,
+        proxy: true,
+        ...(remaining && Number(remaining) < 10 ? { notice: `${remaining} free calls remaining today. Set GROQ_API_KEY for unlimited.` } : {}),
       },
     };
   }
