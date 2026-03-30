@@ -233,6 +233,47 @@ export const services: ServiceDefinition[] = [
     avgLatencyMs: 400,
     successRate: 0.97,
   },
+
+  // ── LLM ─────────────────────────────────────────────────────────────
+  {
+    id: "groq",
+    name: "Groq (Llama 3.3 70B)",
+    category: "llm",
+    free: false,
+    requiresKey: true,
+    envKey: "GROQ_API_KEY",
+    costPerCall: 0,
+    regions: ["global"],
+    qualityScore: 0.85,
+    avgLatencyMs: 200,
+    successRate: 0.97,
+  },
+  {
+    id: "gemini",
+    name: "Google Gemini Flash",
+    category: "llm",
+    free: false,
+    requiresKey: true,
+    envKey: "GOOGLE_AI_API_KEY",
+    costPerCall: 0,
+    regions: ["global"],
+    qualityScore: 0.88,
+    avgLatencyMs: 400,
+    successRate: 0.96,
+  },
+  {
+    id: "openai",
+    name: "OpenAI GPT-4o-mini",
+    category: "llm",
+    free: false,
+    requiresKey: true,
+    envKey: "OPENAI_API_KEY",
+    costPerCall: 0.00015,
+    regions: ["global"],
+    qualityScore: 0.93,
+    avgLatencyMs: 600,
+    successRate: 0.99,
+  },
 ];
 
 /** Look up a single service by ID */

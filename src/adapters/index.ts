@@ -20,6 +20,9 @@ import { DuckDuckGoAdapter } from "./duckduckgo.js";
 import { BraveSearchAdapter } from "./brave-search.js";
 import { HackerNewsAdapter } from "./hackernews.js";
 import { NewsApiAdapter } from "./newsapi.js";
+import { GroqAdapter } from "./groq.js";
+import { GeminiAdapter } from "./gemini.js";
+import { OpenAIAdapter } from "./openai.js";
 
 const adapters = new Map<string, ServiceAdapter>();
 
@@ -45,6 +48,9 @@ register(new DuckDuckGoAdapter());
 register(new BraveSearchAdapter());
 register(new HackerNewsAdapter());
 register(new NewsApiAdapter());
+register(new GroqAdapter());
+register(new GeminiAdapter());
+register(new OpenAIAdapter());
 
 export function getAdapter(serviceId: string): ServiceAdapter | undefined {
   return adapters.get(serviceId);
